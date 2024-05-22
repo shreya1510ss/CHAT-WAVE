@@ -4,7 +4,7 @@ import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ProfileModal from "./miscellaneous/ProfileModal";
@@ -19,7 +19,9 @@ import logo from "./logo.png";
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { Button } from '@chakra-ui/react'
-const ENDPOINT = "http://localhost:5000"; 
+import { FaPaperPlane } from 'react-icons/fa';
+
+const ENDPOINT = "https://chat-wave-chatting-application.onrender.com";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -31,7 +33,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [istyping, setIsTyping] = useState(false);
   const [isPickerVisible, setisPickerVisible] = useState(false);
   const [currentEmoji, setcurrentEmoji] = useState(null);
-  const pickerRef=useRef(null);
+  const pickerRef = useRef(null);
   const inputRef = useRef();
 
 
@@ -83,7 +85,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if ((event.key === "Enter" || event.type === "click") && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -253,15 +255,30 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              
-      <Input
-        ref={inputRef}
-        variant="filled"
-        bg="#E0E0E0"
-        placeholder="Enter a message.."
-        value={newMessage}
-        onChange={typingHandler}
-      />
+
+              <Flex align="center" width="100%">
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                  flex="1"
+                  marginRight="2"
+                  autoComplete="off"
+                  focusBorderColor="transparent"
+                  _focus={{ bg: "blue.50", borderColor: "transparent" }}
+                  
+                />
+                <IconButton
+                  icon={<FaPaperPlane />}
+                  aria-label="Send"
+                  colorScheme="blue"
+                  onClick={(e) =>{sendMessage(e)}}
+                  
+                />
+              </Flex>
+
 
             </FormControl>
           </Box>
