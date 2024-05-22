@@ -49,7 +49,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const { selectedChat, setSelectedChat, user, notification, setNotification } =
+  const { selectedChat, setSelectedChat, user, notification, setNotification, toggle, settoggle } =
     ChatState();
 
   const fetchMessages = async () => {
@@ -117,6 +117,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+
+
+    useEffect(() => {
+    
+    settoggle(false);
+  
+  }, [selectedChat])
+
 
 
 
